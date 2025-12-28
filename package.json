@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx reset && nx run-many --target=serve --projects --all"
+    "dev:init": "nx reset && npm run dev",
+    "dev": "nx run-many --target=serve --projects --all"
   },
   "private": true,
   "devDependencies": {
@@ -70,6 +71,7 @@
     "apps/*"
   ],
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
     "@types/three": "^0.182.0",
     "axios": "^1.6.0",
