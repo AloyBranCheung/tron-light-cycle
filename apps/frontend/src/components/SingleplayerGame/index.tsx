@@ -1,11 +1,15 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, StatsGl, OrthographicCamera } from '@react-three/drei';
+import { StatsGl } from '@react-three/drei';
 import * as THREE from 'three';
+import LightCycle from './LightCycle';
+import CameraController from './CameraController';
 
 export default function SingleplayerGame() {
   return (
     <Canvas
       shadows
+      orthographic
+      camera={{ zoom: 50, position: [0, 10, 10] }}
       gl={{
         toneMapping: THREE.CineonToneMapping,
         outputColorSpace: THREE.SRGBColorSpace,
@@ -18,18 +22,14 @@ export default function SingleplayerGame() {
         position={[-2.46, 5.51, 7.11]}
         intensity={4.2}
       />
-      <OrbitControls />
-
-      <mesh castShadow position={[0, 0.85, 0]}>
-        <boxGeometry />
-        <meshStandardMaterial color="red" />
-      </mesh>
+      <CameraController />
+      <LightCycle />
       <mesh
         receiveShadow
         rotation={[-1.5707963267948963, 0, 0]}
         position={[0, 0.03, 0]}
       >
-        <planeGeometry args={[5, 5, 5]} />
+        <planeGeometry args={[150, 150, 150]} />
         <meshStandardMaterial color="greenyellow" />
       </mesh>
     </Canvas>

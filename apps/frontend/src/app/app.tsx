@@ -1,22 +1,15 @@
-import SingleplayerGame from '../components/SingleplayerGame';
 import { Routes, Route } from 'react-router-dom';
 import Homepage from '../pages/Homepage';
+import SingleplayerGamePage from '../pages/SingleplayerGamePage';
 
 export function App() {
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
       <Routes>
         <Route index element={<Homepage />} />
-        <Route
-          path="singleplayer"
-          element={
-            <div className="h-screen relative">
-              <SingleplayerGame />
-            </div>
-          }
-        />
+        <Route path="singleplayer" element={<SingleplayerGamePage />} />
       </Routes>
-    </main>
+    </div>
   );
 }
 
