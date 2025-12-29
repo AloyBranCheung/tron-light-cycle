@@ -1,7 +1,7 @@
 import { useFrame } from '@react-three/fiber';
-import { RefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { Mesh, PerspectiveCamera } from 'three';
-import { gsap } from 'gsap';
+import Trail from './Trail';
 
 interface LightCycleProps {
   perspectiveCameraRef: RefObject<PerspectiveCamera | null>;
@@ -9,10 +9,16 @@ interface LightCycleProps {
 export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
   const lightCycleRef = useRef<Mesh>(null);
   const direction = useRef<{ x: number; z: number }>({ x: 1, z: 0 });
+  const lightCycleTrailRef = useRef<Mesh>(null);
+  const trailsRefs = useRef<Mesh[]>([]);
 
   useFrame(() => {
     // TODO: run loop only if game start
-    if (lightCycleRef.current && perspectiveCameraRef.current) {
+    if (
+      lightCycleRef.current &&
+      perspectiveCameraRef.current &&
+      lightCycleTrailRef.current
+    ) {
       // lightcycle movement logic
       const speed = 0.1;
       lightCycleRef.current.position.x += direction.current.x * speed;
@@ -46,6 +52,7 @@ export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
         // Turn left (90° counterclockwise)
         const newX = direction.current.z;
         const newZ = -direction.current.x;
+
         direction.current = { x: newX, z: newZ };
         // rotate the object
         lightCycleRef.current.rotation.y += Math.PI / 2;
@@ -65,14 +72,16 @@ export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
     };
   }, []);
   return (
-    <mesh
-      ref={lightCycleRef}
-      name="lightCycle"
-      castShadow
-      position={[0, 0.54, 0]}
-    >
-      <boxGeometry />
-      <meshStandardMaterial color="red" />
-    </mesh>
+    <>
+      <mesh
+        ref={lightCycleRef}
+        name="lightCycle"
+        castShadow
+        position={[0, 0.5, 0]}
+      >
+        <boxGeometry />
+        <meshStandardMaterial color="red" />
+      </mesh>
+    </>
   );
 }
