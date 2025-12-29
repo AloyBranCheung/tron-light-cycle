@@ -16,6 +16,7 @@ export default function SingleplayerGame() {
         outputColorSpace: THREE.SRGBColorSpace,
       }}
     >
+      {/* Scene setup */}
       <PerspectiveCamera
         ref={perspectiveCameraRef}
         makeDefault
@@ -31,6 +32,9 @@ export default function SingleplayerGame() {
         position={[-2.46, 6, 7.11]}
         intensity={4.2}
       />
+      <Floor />
+
+      {/* LightCycle and Game logic */}
       <LightCycle perspectiveCameraRef={perspectiveCameraRef} />
 
       {/* // TODO: remove this - just a marker for dev to follow movement */}
@@ -38,7 +42,6 @@ export default function SingleplayerGame() {
         <boxGeometry />
         <meshStandardMaterial color="blue" />
       </mesh>
-      <Floor />
     </Canvas>
   );
 }

@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber';
 import { RefObject, useEffect, useRef } from 'react';
 import { Mesh, PerspectiveCamera } from 'three';
+import { gsap } from 'gsap';
 
 interface LightCycleProps {
   perspectiveCameraRef: RefObject<PerspectiveCamera | null>;
@@ -47,14 +48,22 @@ export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
         const newZ = -direction.current.x;
         direction.current = { x: newX, z: newZ };
         // rotate the object
-        lightCycleRef.current.rotation.y += Math.PI / 2;
+        gsap.to(lightCycleRef.current.rotation, {
+          y: lightCycleRef.current.rotation.y + Math.PI / 2,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
       } else if (event.key === 'ArrowRight' || event.key === 'd') {
         // Turn right (90° clockwise)
         const newX = -direction.current.z;
         const newZ = direction.current.x;
         direction.current = { x: newX, z: newZ };
         // rotate the object
-        lightCycleRef.current.rotation.y -= Math.PI / 2;
+        gsap.to(lightCycleRef.current.rotation, {
+          y: lightCycleRef.current.rotation.y - Math.PI / 2,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
       }
     };
 
