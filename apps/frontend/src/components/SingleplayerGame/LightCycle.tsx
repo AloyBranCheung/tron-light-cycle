@@ -48,22 +48,14 @@ export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
         const newZ = -direction.current.x;
         direction.current = { x: newX, z: newZ };
         // rotate the object
-        gsap.to(lightCycleRef.current.rotation, {
-          y: lightCycleRef.current.rotation.y + Math.PI / 2,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
+        lightCycleRef.current.rotation.y += Math.PI / 2;
       } else if (event.key === 'ArrowRight' || event.key === 'd') {
         // Turn right (90° clockwise)
         const newX = -direction.current.z;
         const newZ = direction.current.x;
         direction.current = { x: newX, z: newZ };
         // rotate the object
-        gsap.to(lightCycleRef.current.rotation, {
-          y: lightCycleRef.current.rotation.y - Math.PI / 2,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
+        lightCycleRef.current.rotation.y -= Math.PI / 2;
       }
     };
 
