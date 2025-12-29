@@ -32,6 +32,12 @@ export default function SingleplayerGame() {
         intensity={4.2}
       />
       <LightCycle perspectiveCameraRef={perspectiveCameraRef} />
+
+      {/* // TODO: remove this - just a marker for dev to follow movement */}
+      <mesh castShadow position={[5, 0.54, 5]}>
+        <boxGeometry />
+        <meshStandardMaterial color="blue" />
+      </mesh>
       <Floor />
     </Canvas>
   );

@@ -7,26 +7,27 @@ interface LightCycleProps {
 }
 export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
   const lightCycleRef = useRef<Mesh>(null);
-  const direction = useRef<'x' | 'z'>('x');
+  const direction = useRef<{ x: number; z: number }>({ x: 1, z: 0 });
 
   useFrame(() => {
     // TODO: run loop only if game start
     if (lightCycleRef.current && perspectiveCameraRef.current) {
       // lightcycle movement logic
       const speed = 0.1;
-      if (direction.current === 'x') {
-        lightCycleRef.current.position.x += speed;
-      } else {
-        lightCycleRef.current.position.z += speed;
-      }
+      lightCycleRef.current.position.x += direction.current.x * speed;
+      lightCycleRef.current.position.z += direction.current.z * speed;
 
       // 3rd person camera offset (behind and above)
       const offset = { x: -2, y: 1.5, z: 0 };
+      const rotatedOffset = {
+        x: offset.x * direction.current.x - offset.z * direction.current.z,
+        z: offset.x * direction.current.z + offset.z * direction.current.x,
+      };
 
       perspectiveCameraRef.current.position.set(
-        lightCycleRef.current.position.x + offset.x,
+        lightCycleRef.current.position.x + rotatedOffset.x,
         lightCycleRef.current.position.y + offset.y,
-        lightCycleRef.current.position.z + offset.z
+        lightCycleRef.current.position.z + rotatedOffset.z
       );
 
       perspectiveCameraRef.current.lookAt(lightCycleRef.current.position);
@@ -41,23 +42,19 @@ export default function LightCycle({ perspectiveCameraRef }: LightCycleProps) {
         return;
       }
       if (event.key === 'ArrowLeft' || event.key === 'a') {
-        // Turn left
-        if (direction.current === 'x') {
-          direction.current = 'z';
-          lightCycleRef.current.rotation.y += Math.PI / 2;
-        } else {
-          direction.current = 'x';
-          lightCycleRef.current.rotation.y -= Math.PI / 2;
-        }
+        // Turn left (90° counterclockwise)
+        const newX = direction.current.z;
+        const newZ = -direction.current.x;
+        direction.current = { x: newX, z: newZ };
+        // rotate the object
+        lightCycleRef.current.rotation.y += Math.PI / 2;
       } else if (event.key === 'ArrowRight' || event.key === 'd') {
-        // Turn right
-        if (direction.current === 'x') {
-          direction.current = 'z';
-          lightCycleRef.current.rotation.y -= Math.PI / 2;
-        } else {
-          direction.current = 'x';
-          lightCycleRef.current.rotation.y += Math.PI / 2;
-        }
+        // Turn right (90° clockwise)
+        const newX = -direction.current.z;
+        const newZ = direction.current.x;
+        direction.current = { x: newX, z: newZ };
+        // rotate the object
+        lightCycleRef.current.rotation.y -= Math.PI / 2;
       }
     };
 
